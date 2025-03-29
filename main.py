@@ -3,40 +3,37 @@
 # How to run:
 # 1) In terminal, add `DISCORD_TOKEN` environment variable to store bot's token
 # 2) In terminal, run `python main.py` to start the bot
-# 3) In server, send `$hello` message to see the bot respond
 
-import os
+import settings
 import discord
+from discord.ext import commands
 from summarise import get_summary
 
-intents = discord.Intents.default()
-intents.message_content = True
+logger = settings.logging.getLogger("bot")
 
-client = discord.Client(intents=intents)
+def run():
+    intents = discord.Intents.default()
+    intents.message_content = True
 
+    bot = commands.Bot(command_prefix="!", intents=intents)
 
-@client.event
-async def on_ready():
-    print(f"We have logged in as {client.user}")
+    @bot.event
+    async def on_ready():
+        logger.info(f"User: {bot.user} (ID: {bot.user.id})")
+        logger.info(f"Guild ID: {bot.guilds[0].id}")
+        bot.tree.copy_global_to(guild=settings.GUILDS_ID)
+        await bot.tree.sync(guild=settings.GUILDS_ID)
 
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith("test summarise"):
-        await message.channel.send("Working on your summary...")
+    @bot.tree.command(description="Summarise messages")
+    async def summarise(interaction: discord.Interaction):
 
         try:
             summary = get_summary()
-            await message.channel.send(f"📋 Summary:\n{summary}")
+            await interaction.response.send_message(f"📋 Summary:\n{summary}")
         except Exception as e:
-            await message.channel.send(f"⚠️ Error: {str(e)}")
+            await interaction.response.send_message(f"⚠️ Error: {str(e)}")
 
+    bot.run(settings.DISCORD_TOKEN, root_logger=True)
 
-token = os.getenv("DISCORD_TOKEN")
-if token is None:
-    raise ValueError("DISCORD_TOKEN is not set")
-
-client.run(token)
+if __name__ == "__main__":
+    run()
