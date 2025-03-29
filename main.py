@@ -10,6 +10,8 @@ from discord.ext import commands
 from summarise import get_summary, fetch_recent_messages
 import os
 
+logger = settings.logging.getLogger("bot")
+
 def run():
     intents = discord.Intents.default()
     intents.message_content = True
