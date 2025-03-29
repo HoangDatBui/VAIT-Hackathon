@@ -28,15 +28,9 @@ def run():
     async def summarise(interaction: discord.Interaction):
         await interaction.response.defer() # Acknowledge the interaction immediately.
         try:
-            channel = interaction.channel
-            messages = await fetch_recent_messages(channel)
-
-            if not messages:
-                await interaction.followup.send("No messages found in the last 7 days.")
-                return
-            
-            summary = get_summary(messages)
+            summary = await get_summary(interaction.channel)
             await interaction.followup.send(f"📋 Summary:\n{summary}")
+            
         except Exception as e:
             await interaction.followup.send(f"⚠️ Error: {str(e)}")
 
