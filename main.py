@@ -5,31 +5,27 @@
 # 2) In terminal, run `python main.py` to start the bot
 # 3) In server, send `$hello` message to see the bot respond
 
-import os
+import settings
 import discord
+from discord.ext import commands
+
+logger = settings.logging.getLogger("bot")
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-
-@client.event
+@bot.event
 async def on_ready():
-    print(f"We have logged in as {client.user}")
+    logger.info(f"User: {bot.user} (ID: {bot.user.id})")
 
-
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     if message.content.startswith("$hello"):
         await message.channel.send("Hello!")
 
-
-token = os.getenv("DISCORD_TOKEN")
-if token is None:
-    raise ValueError("DISCORD_TOKEN is not set")
-
-client.run(token)
+bot.run(settings.DISCORD_TOKEN, root_logger=True)
