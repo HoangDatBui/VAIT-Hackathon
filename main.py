@@ -1,10 +1,11 @@
-
-import settings
+import logging
 import discord
-from discord.ext import commands
-from summarise import get_summary, fetch_recent_messages
+import settings
 
-logger = settings.logging.getLogger("bot")
+from discord.ext import commands
+from summarise import get_summary, Channel
+
+logger = logging.getLogger("bot")
 
 
 def run():
@@ -21,7 +22,12 @@ def run():
     @bot.tree.command(description="Summarise messages from the last 7 days")
     async def summarise(interaction: discord.Interaction):
         await interaction.response.defer()  # Acknowledge the interaction immediately.
+
         try:
+            if interaction.channel is None:
+                raise ValueError("Channel not found")
+            if not isinstance(interaction.channel, Channel):
+                raise ValueError("Channel is not a text channel or thread")
             summary = await get_summary(interaction.channel)
             await interaction.followup.send(f"📋 Summary:\n{summary}")
             logger.info(
