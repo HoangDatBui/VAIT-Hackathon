@@ -7,6 +7,7 @@
 
 import os
 import discord
+from summarise import get_summary
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -24,8 +25,14 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith("$hello"):
-        await message.channel.send("Hello!")
+    if message.content.startswith("test summarise"):
+        await message.channel.send("Working on your summary...")
+
+        try:
+            summary = get_summary()
+            await message.channel.send(f"📋 Summary:\n{summary}")
+        except Exception as e:
+            await message.channel.send(f"⚠️ Error: {str(e)}")
 
 
 token = os.getenv("DISCORD_TOKEN")
