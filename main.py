@@ -26,12 +26,12 @@ def run():
 
     @bot.tree.command(description="Summarise messages")
     async def summarise(interaction: discord.Interaction):
-
+        await interaction.response.defer() # Acknowledge the interaction immediately.
         try:
             summary = get_summary()
-            await interaction.response.send_message(f"📋 Summary:\n{summary}")
+            await interaction.followup.send(f"📋 Summary:\n{summary}")
         except Exception as e:
-            await interaction.response.send_message(f"⚠️ Error: {str(e)}")
+            await interaction.followup.send(f"⚠️ Error: {str(e)}")
 
     bot.run(settings.DISCORD_TOKEN, root_logger=True)
 

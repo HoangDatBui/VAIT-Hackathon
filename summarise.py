@@ -1,14 +1,11 @@
+import settings
 import os
 from openai import OpenAI
 
 def get_summary():
-    # Get API key from environment variable
-    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
-    if deepseek_key is None:
-        raise ValueError("DEEPSEEK_API_KEY is not set")
 
     # Initialize DeepSeek client
-    client = OpenAI(api_key=deepseek_key, base_url="https://api.deepseek.com")
+    client = OpenAI(api_key=settings.DEEPSEEK_API_KEY, base_url="https://api.deepseek.com")
 
     # Hardcoded messages for testing
     messages = [
