@@ -3,11 +3,11 @@
 # How to run:
 # 1) In terminal, add `DISCORD_TOKEN` environment variable to store bot's token
 # 2) In terminal, run `python main.py` to start the bot
-# 3) In server, send `$hello` message to see the bot respond
 
 import settings
 import discord
 from discord.ext import commands
+from summarise import get_summary
 
 logger = settings.logging.getLogger("bot")
 
@@ -20,15 +20,18 @@ def run():
     @bot.event
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")
-        logger.info(f"Guild ID: {bot.guilds[1].id}")
-        bot.tree.copy_global_to(guild=settings.GUILD_ID)
-        await bot.tree.sync(guild=settings.GUILD_ID)
+        logger.info(f"Guild ID: {bot.guilds[0].id}")
+        bot.tree.copy_global_to(guild=settings.GUILDS_ID)
+        await bot.tree.sync(guild=settings.GUILDS_ID)
 
     @bot.tree.command(description="Summarise messages")
     async def summarise(interaction: discord.Interaction):
 
-        #TODO
-        await interaction.response.send_message(f"Summarising for user {interaction.user.mention}", ephemeral=True)
+        try:
+            summary = get_summary()
+            await interaction.response.send_message(f"📋 Summary:\n{summary}")
+        except Exception as e:
+            await interaction.response.send_message(f"⚠️ Error: {str(e)}")
 
     bot.run(settings.DISCORD_TOKEN, root_logger=True)
 
