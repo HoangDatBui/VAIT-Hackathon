@@ -28,7 +28,9 @@ def run():
         try:
             summary = await get_summary(interaction.channel)
             await interaction.followup.send(f"📋 Summary:\n{summary}")
-            
+            logger.info(
+                f"Summarised {interaction.channel.name} ({interaction.channel.id}) in {interaction.guild.name} ({interaction.guild.id})"
+            )
         except Exception as e:
             await interaction.followup.send(f"⚠️ Error: {str(e)}")
 
