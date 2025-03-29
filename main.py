@@ -1,8 +1,3 @@
-# Source: https://discordpy.readthedocs.io/en/stable/quickstart.html
-
-# How to run:
-# 1) In terminal, add `DISCORD_TOKEN` environment variable to store bot's token
-# 2) In terminal, run `python main.py` to start the bot
 
 import settings
 import discord
