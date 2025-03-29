@@ -20,9 +20,7 @@ def run():
     @bot.event
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")
-        logger.info(f"Guild ID: {bot.guilds[0].id}")
-        bot.tree.copy_global_to(guild=settings.GUILDS_ID)
-        await bot.tree.sync(guild=settings.GUILDS_ID)
+        logger.info(f"Guild IDs: {[guild.id for guild in bot.guilds]}")
 
     @bot.tree.command(description="Summarise messages from the last 7 days")
     async def summarise(interaction: discord.Interaction):

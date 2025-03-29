@@ -10,8 +10,6 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 if DISCORD_TOKEN is None:
     raise ValueError("DISCORD_TOKEN is not set")
 
-GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))
-
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 if DEEPSEEK_API_KEY is None:
     raise ValueError("DEEPSEEK_API_KEY is not set")
