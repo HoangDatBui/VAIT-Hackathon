@@ -1,9 +1,9 @@
 # Source: https://discordpy.readthedocs.io/en/stable/quickstart.html
 
 # How to run:
-# 1) Add DISCORD_TOKEN environment variable to store bot's token
-# 2) Run `python main.py` to start the bot
-# 3) Send `$hello` to see the bot respond
+# 1) In terminal, dd `DISCORD_TOKEN` environment variable to store bot's token
+# 2) In terminal, run `python main.py` to start the bot
+# 3) In server, send `$hello` message to see the bot respond
 
 import os
 import discord
