@@ -1,10 +1,13 @@
 import os
 import logging
+import discord
 from logging.config import dictConfig
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 if DISCORD_TOKEN is None:
     raise ValueError("DISCORD_TOKEN is not set")
+
+GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))
 
 LOGGING_CONFIG = {
     "version": 1,

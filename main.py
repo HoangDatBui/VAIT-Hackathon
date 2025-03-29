@@ -11,21 +11,26 @@ from discord.ext import commands
 
 logger = settings.logging.getLogger("bot")
 
-intents = discord.Intents.default()
-intents.message_content = True
+def run():
+    intents = discord.Intents.default()
+    intents.message_content = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+    bot = commands.Bot(command_prefix="!", intents=intents)
 
-@bot.event
-async def on_ready():
-    logger.info(f"User: {bot.user} (ID: {bot.user.id})")
+    @bot.event
+    async def on_ready():
+        logger.info(f"User: {bot.user} (ID: {bot.user.id})")
+        logger.info(f"Guild ID: {bot.guilds[1].id}")
+        bot.tree.copy_global_to(guild=settings.GUILD_ID)
+        await bot.tree.sync(guild=settings.GUILD_ID)
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
+    @bot.tree.command(description="Summarise messages")
+    async def summarise(interaction: discord.Interaction):
 
-    if message.content.startswith("$hello"):
-        await message.channel.send("Hello!")
+        #TODO
+        await interaction.response.send_message(f"Summarising for user {interaction.user.mention}", ephemeral=True)
 
-bot.run(settings.DISCORD_TOKEN, root_logger=True)
+    bot.run(settings.DISCORD_TOKEN, root_logger=True)
+
+if __name__ == "__main__":
+    run()
