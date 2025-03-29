@@ -1,4 +1,4 @@
-# Server Engagement Bot (SEB)
+# SEBastian (Server Engagement Bot)
 
 ## Quick Start:
 
