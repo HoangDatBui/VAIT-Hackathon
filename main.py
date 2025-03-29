@@ -8,6 +8,14 @@ import settings
 import discord
 from discord.ext import commands
 from summarise import get_summary, fetch_recent_messages
+from flask import Flask
+import os
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running!"
 
 logger = settings.logging.getLogger("bot")
 
@@ -37,4 +45,5 @@ def run():
     bot.run(settings.DISCORD_TOKEN, root_logger=True)
 
 if __name__ == "__main__":
-    run()
+    port = int(os.environ.get("PORT", 5000)) 
+    app.run(host="0.0.0.0", port=port)
